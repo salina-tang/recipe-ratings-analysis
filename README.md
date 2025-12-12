@@ -123,7 +123,7 @@ To decide if our missingness is dependent on other columns in the dataset, we pe
 #### Permutation Test #1: total fat (PDV)
 **Null Hypothesis:** The missingness of rating does not depend on the total fat in the recipe.  
 **Alternate Hypothesis:** The missingness of rating does depend on the total fat in the recipe.  
-**Test Statistic:** The absolute difference in means of the total fat in recipes with and without missing ratings.
+**Test Statistic:** The absolute difference in means of the total fat in recipes with and without missing ratings.  
 **Significance Level:** 0.05
 
 <iframe
@@ -158,8 +158,8 @@ For our second permutation test, we found the **observed statistic** to be **51.
 As mentioned previously, in our project we intend to analyze whether people rate high-fat and low-fat recipes on the same scale. To investigate this, we ran a **permutation test** on the 0.05 confidence level with the following hypotheses.
 
 **Null Hypothesis:** People rate high-fat and low-fat recipes on the same scale.  
-**Alternative Hypothesis:** People rate high-fat recipes higher than low-fat recipes.
-**Test Statistic:** Difference in mean between high-fat and low-fat recipes.
+**Alternative Hypothesis:** People rate high-fat recipes higher than low-fat recipes.  
+**Test Statistic:** Difference in mean between high-fat and low-fat recipes.  
 **Significance Level:** 0.05
 
 We chose to run a permutation because we wanted to see if the two distributions look like they come from the same population. We suggest that **people rate high-fat recipes higher** because many people rate recipes based on the taste of the final product. In general, high-fat recipes often taste better than low-fat recipes due to high amounts of sugar and fats that elevate the taste of the dish. Since direction matters in our test, we chose to use the difference in mean rather than absolute difference so that we may see which group of recipes have a higher rating. We chose to use a significance level of 0.05, as it is the common benchmark for hypothesis tests.
@@ -187,6 +187,12 @@ Since the ratings are created after the commenters have tried the recipes, we ha
 ---
 
 ## Baseline Model
+For our baseline model, we utilized a random forest regressor and split the data points into training and test sets using sklearn's `train_test_split` method. As there are a few outliers and missing values in the columns we are using, we used the IQR method to exclude outliers from the `'minutes'` column and named our filtered dataframe `filtered_agg`. Since `avg_rating` has missing values that we cannot impute, as it would introduce more noise and skew our predictions, we decided to drop the missing values as it is a small percentage of the observations. 
+
+Thus, the features we are using for this model is `'minutes'`, a quantitative column, and `'fat_category'`, a nominal column which takes on the values of `'high-fat'` or `'low-fat'`. Since the range is quite large, but is somewhat skewed, we encoded the `'minutes'` with `StandardScalar` for more meaningful coefficients. For `'fat_category'`, we performed a one hot encoding and dropped one column, resulting in a `'high-fat'` column which takes value 1 for a recipe being `'high-fat'` and 0 otherwise. These steps allowed us to train the model on the data from our split
+
+Our **MAE** metric for this model evaluated to be **0.336**. This means that our predictions were roughly 0.336 points off from the true value, which, considering that ratings range from 1 to 5, is "good". This error means that our predictions were about 8-9% off from the total scale, which is quite small and means that predictions were consistently close to the true ratings.
+
 
 ---
 

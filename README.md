@@ -74,7 +74,6 @@ Our cleaned dataframe resulted in a total of 234429 observations and 26 columns.
 
 
 ### Univarate Analysis
-
 For this analysis, we decided to view the distribution of fat density, or the column `'prop_fat'`. As shown in the plot below, the distribution is concentrated between 0.4 and 0.6, indicating that the proportion of fat for the recipes on food.com are clustered within this range. The bump in the first bin suggests that there may be some recipes that are listed as zero fat.
 
 <iframe
@@ -84,9 +83,7 @@ For this analysis, we decided to view the distribution of fat density, or the co
   frameborder="0"
 ></iframe>
 
-
 ### Bivariate Analysis
-
 For this analysis, we examined if there was a significance difference in distribution of ratings for low-fat and high-fat recipes. As shown in the graph below, the overall trend is that most recipes are rated on the higher end. For the ratings of 1-4, recipes were more likely to be low-fat, while in the rating of 5, recipes were more likely to be high-fat. In our later tests, we will see if this difference is significant.
 
 <iframe
@@ -96,9 +93,7 @@ For this analysis, we examined if there was a significance difference in distrib
   frameborder="0"
 ></iframe>
 
-
 ### Interesting Aggregates
-
 For this section, we investigated the relationship between the total calories of a recipe and its proportion of fat. Since there are some outliers in `'calories (#)'`, we created separate dataframe `filtered3_agg` to store the observations without outliers. We used the IQR method to identify these outliers. We then created six calories bins to compare the aggregates for proportion of fat between each. 
 
 | cal_bin         |   ('mean', 'prop_fat') |   ('median', 'prop_fat') |   ('min', 'prop_fat') |   ('max', 'prop_fat') |   ('std', 'prop_fat') |
@@ -110,11 +105,50 @@ For this section, we investigated the relationship between the total calories of
 | (385.1, 536.7]  |               0.525576 |                 0.534382 |                     0 |               1.21923 |              0.217301 |
 | (536.7, 971.7]  |               0.567884 |                 0.578701 |                     0 |               1.2477  |              0.220006 |
 
+The results are as expected, with proportion of fat increasing as the calories increase. Since each gram of fat equates to 9 calories, it is reasonable that recipes with high amounts of calories may be inflated so by the amount of fat in the recipe. 
+
 
 ---
 
 ## Assessment of Missingness
 
+To assess missingness, we sorted and viewed the value counts of missing values in the columns of `recipe_ratings`. From this, we deduced that `'rating'`, `'description'`, and `'review'` have significant amounts of missing values. Thus, we will proceed to assess the missingness in the dataframe.
+
+### NMAR Analysis
+I believe that the column that is most likely to be NMAR is the 'rating' column. People are less likely to leave a rating if the score they would have given is low, which means that missingness depends on the value itself. Additional data that could potentially change this missingness to MAR would be an analysis of the users' rating patterns--such as if they typically leave a rating or just a review--or possibilities of technical issues that erased the ratings. Such factors could explain the missingness of 'rating' values.
+
+### Missingness Dependency
+To decide if our missingness is dependent on other columns in the dataset, we performed some permutation tests to investigate the dependency of the missingness of `'rating'` on a few other columns. 
+
+#### Permutation Test #1: total fat (PDV)
+**Null Hypothesis:** The missingness of rating does not depend on the total fat in the recipe.  
+**Alternate Hypothesis:** The missingness of rating does depend on the total fat in the recipe.  
+**Test Statistic:** The absolute difference in means of the total fat in recipes with and without missing ratings.
+**Significance Level:** 0.05
+
+<iframe
+  src="assets/missing-perm-fig1.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+For our first permutation test, the observed statistic is 5.7406 and is denoted by the red line on the graph above. Since the p-value is 0.0, we reject the null hypothesis on a confidence level of 0.05. The missingness of 'rating' does depend on the total fat (PDV) of the recipe.
+
+#### Permutation Test #2: calories (#)
+**Null Hypothesis:** The missingness of rating does not depend on the amount of calories in the recipe.  
+**Alternate Hypothesis:** The missingness of rating does depend on the amount of calories in the recipe.  
+**Test Statistic:** The absolute difference in means of the calories in recipes with and without missing ratings.
+**Significance Level:** 0.05
+
+<iframe
+  src="assets/missing-perm-fig2.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+For our second permutation test, we found the observed statistic to be 51.4234 and is denoted by the red line on the graph above. Since the p-value was calculated to be 0.131, we fail to reject the null hypothesis on a confidence level of 0.05. Thus, we cannot conclude that the missingness of the 'rating' column depends on the time (in minutes) to prepare the recipe. 
 
 
 ---

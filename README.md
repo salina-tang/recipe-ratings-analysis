@@ -8,7 +8,7 @@ by Salina Tang
 
 As with many others, I am an avid food enjoyer and have recently been interested in learning how to cook and bake. However, as I become more conscious of my health, I start to look at the nutrition facts of different recipes and how various ingredients contribute to each statistic. People should be more aware of what they are consuming for the health of their bodies and well-being, especially with possible harmful consequences of excess fat or sodium. For this data science project, I intend on exploring two datasets from [food.com](https://www.food.com/): one containing recipes and their nutritional information, and the other containing user ratings for those recipes. **In particular, I hope to examine whether people rate high-fat and low-fat recipes on the same scale or rather high-fat recipes higher.** By finding an answer to this question, I aim to better understand user preferences in relation to nutritional content.
 
-The first dataset ==recipes== contains 83782 observations and 12 columns:
+The first dataset `recipes` contains 83782 observations and 12 columns:
 | Column           | Description |
 | ---------------- | ----------- |
 | 'name'           | Recipe name |

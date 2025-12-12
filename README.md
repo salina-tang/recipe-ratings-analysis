@@ -10,18 +10,31 @@ As with many others, I am an avid food enjoyer and have recently been interested
 
 The first dataset `recipes` contains 83782 observations and 12 columns:
 
-| Column           | Description |
-|:-----------------|------------:|
-| 'name'           | Recipe name |
-| 'id'             | Recipe ID |
-| 'minutes'        | Minutes to prepare recipe |
-| 'contributor_id' | User ID who submitted this recipe |
-| 'submitted'      | Date recipe was submitted |
-| 'tags'           | Food.com tags for recipe |
-| 'nutrition'      | Nutrition information in the form [calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]; PDV stands for "percentage of daily value" |
-| 'n_steps'        | Number of steps in recipe |
-| 'steps'          | Text for recipe steps, in order |
-| 'description'    | User-provided description |
+| Column             | Description |
+|:-------------------|:------------|
+| `'name'`           | Recipe name |
+| `'id'`             | Recipe ID |
+| `'minutes'`        | Minutes to prepare recipe |
+| `'contributor_id'` | User ID who submitted this recipe |
+| `'submitted'`      | Date recipe was submitted |
+| `'tags'`           | Food.com tags for recipe |
+| `'nutrition'`      | Nutrition information in the form [calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]; PDV stands for "percentage of daily value" |
+| `'n_steps'`        | Number of steps in recipe |
+| `'steps'`          | Text for recipe steps, in order |
+| `'description'`    | User-provided description |
+
+
+The second dataset `interacts` contains 731927 observations and 5 columns:
+
+| Column         | Description |
+|:---------------|:------------|
+| `'user_id'`    | User ID |
+| `'recipe_id'`  | Recipe ID |
+| `'date'`       | Date of interaction |
+| `'rating'`     | Rating given |
+| `'review'`     | Review text |
+
+For our data analysis, we will separate the `'nutrition'` column to make use of the different nutritional information the recipe provides. In particular, we are interested in the `'calories (#)'` and `'total fat (PDV)'` values. Since we are interested in the trends of how people rate different recipes, we are also interested in the `'rating'` column.
 
 ---
 

@@ -78,7 +78,7 @@ Our cleaned dataframe resulted in a total of 234429 observations and 26 columns.
 For this analysis, we decided to view the distribution of fat density, or the column `'prop_fat'`. As shown in the plot below, the distribution is concentrated between 0.4 and 0.6, indicating that the proportion of fat for the recipes on food.com are clustered within this range. The bump in the first bin suggests that there may be some recipes that are listed as zero fat.
 
 <iframe
-  src="recipe-ratings-analysis/assets/univariate-fig.html"
+  src="assets/univariate-fig.html"
   width="800"
   height="600"
   frameborder="0"
@@ -90,15 +90,32 @@ For this analysis, we decided to view the distribution of fat density, or the co
 For this analysis, we examined if there was a significance difference in distribution of ratings for low-fat and high-fat recipes. As shown in the graph below, the overall trend is that most recipes are rated on the higher end. For the ratings of 1-4, recipes were more likely to be low-fat, while in the rating of 5, recipes were more likely to be high-fat. In our later tests, we will see if this difference is significant.
 
 <iframe
-  src="recipe-ratings-analysis/assets/bivariate-fig.html"
+  src="assets/bivariate-fig.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
 
+
+### Interesting Aggregates
+
+For this section, we investigated the relationship between the total calories of a recipe and its proportion of fat. Since there are some outliers in `'calories (#)'`, we created separate dataframe `filtered3_agg` to store the observations without outliers. We used the IQR method to identify these outliers. We then created six calories bins to compare the aggregates for proportion of fat between each. 
+
+| cal_bin         |   ('mean', 'prop_fat') |   ('median', 'prop_fat') |   ('min', 'prop_fat') |   ('max', 'prop_fat') |   ('std', 'prop_fat') |
+|:----------------|-----------------------:|-------------------------:|----------------------:|----------------------:|----------------------:|
+| (-0.001, 125.0] |               0.370237 |                 0.36     |                     0 |               1.21483 |              0.327676 |
+| (125.0, 201.8]  |               0.438575 |                 0.428286 |                     0 |               1.21575 |              0.282432 |
+| (201.8, 284.7]  |               0.470528 |                 0.456056 |                     0 |               1.21935 |              0.254268 |
+| (284.7, 385.1]  |               0.495173 |                 0.495197 |                     0 |               1.21575 |              0.23282  |
+| (385.1, 536.7]  |               0.525576 |                 0.534382 |                     0 |               1.21923 |              0.217301 |
+| (536.7, 971.7]  |               0.567884 |                 0.578701 |                     0 |               1.2477  |              0.220006 |
+
+
 ---
 
 ## Assessment of Missingness
+
+
 
 ---
 

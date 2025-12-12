@@ -79,7 +79,7 @@ For this analysis, we decided to view the distribution of fat density, or the co
 <iframe
   src="assets/univariate-fig.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -89,7 +89,7 @@ For this analysis, we examined if there was a significance difference in distrib
 <iframe
   src="assets/bivariate-fig.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -129,11 +129,11 @@ To decide if our missingness is dependent on other columns in the dataset, we pe
 <iframe
   src="assets/missing-perm-fig1.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
-For our first permutation test, the observed statistic is 5.7406 and is denoted by the red line on the graph above. Since the p-value is 0.0, we reject the null hypothesis on a confidence level of 0.05. The missingness of 'rating' does depend on the total fat (PDV) of the recipe.
+For our first permutation test, the **observed statistic** is **5.7406** and is denoted by the red line on the graph above. Since the **p-value** is **0.0**, we **reject the null hypothesis** on a confidence level of 0.05. The missingness of 'rating' does depend on the total fat (PDV) of the recipe.
 
 #### Permutation Test #2: calories (#)
 **Null Hypothesis:** The missingness of rating does not depend on the amount of calories in the recipe.  
@@ -144,16 +144,35 @@ For our first permutation test, the observed statistic is 5.7406 and is denoted 
 <iframe
   src="assets/missing-perm-fig2.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
-For our second permutation test, we found the observed statistic to be 51.4234 and is denoted by the red line on the graph above. Since the p-value was calculated to be 0.131, we fail to reject the null hypothesis on a confidence level of 0.05. Thus, we cannot conclude that the missingness of the 'rating' column depends on the time (in minutes) to prepare the recipe. 
+For our second permutation test, we found the **observed statistic** to be **51.4234** and is denoted by the red line on the graph above. Since the **p-value** was calculated to be **0.131**, we **fail to reject the null hypothesis** on a confidence level of 0.05. Thus, we cannot conclude that the missingness of the 'rating' column depends on the time (in minutes) to prepare the recipe. 
 
 
 ---
 
 ## Hypothesis Testing
+
+As mentioned previously, in our project we intend to analyze whether people rate high-fat and low-fat recipes on the same scale. To investigate this, we ran a **permutation test** on the 0.05 confidence level with the following hypotheses.
+
+**Null Hypothesis:** People rate high-fat and low-fat recipes on the same scale.  
+**Alternative Hypothesis:** People rate high-fat recipes higher than low-fat recipes.
+**Test Statistic:** Difference in mean between high-fat and low-fat recipes.
+**Significance Level:** 0.05
+
+We chose to run a permutation because we wanted to see if the two distributions look like they come from the same population. We suggest that **people rate high-fat recipes higher** because many people rate recipes based on the taste of the final product. In general, high-fat recipes often taste better than low-fat recipes due to high amounts of sugar and fats that elevate the taste of the dish. Since direction matters in our test, we chose to use the difference in mean rather than absolute difference so that we may see which group of recipes have a higher rating. We chose to use a significance level of 0.05, as it is the common benchmark for hypothesis tests.
+
+<iframe
+  src="assets/hypotest_fig.html"
+  width="800"
+  height="400"
+  frameborder="0"
+></iframe>
+
+After performing our permutation test with 1000 permutations, we compared the results to our **observed statistic** of **0.0328**. Our resulting **p-value** was **0.0**, which, when compared to our significance level of 0.05, means that we **reject the null hypothesis**. In conclusion, people do not rate high-fat and low-fat recipes on the same scale, and tend to rate high-fat recipes higher. A possible explanation for this is, as we mentioned earlier, that high-fat recipes could taste better than low-fat recipes for the general reviewers.
+
 
 ---
 

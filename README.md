@@ -79,7 +79,7 @@ For this analysis, we decided to view the distribution of fat density, or the co
 <iframe
   src="assets/univariate-fig.html"
   width="800"
-  height="400"
+  height="450"
   frameborder="0"
 ></iframe>
 
@@ -89,7 +89,7 @@ For this analysis, we examined if there was a significance difference in distrib
 <iframe
   src="assets/bivariate-fig.html"
   width="800"
-  height="400"
+  height="450"
   frameborder="0"
 ></iframe>
 
@@ -129,7 +129,7 @@ To decide if our missingness is dependent on other columns in the dataset, we pe
 <iframe
   src="assets/missing-perm-fig1.html"
   width="800"
-  height="400"
+  height="450"
   frameborder="0"
 ></iframe>
 
@@ -144,7 +144,7 @@ For our first permutation test, the **observed statistic** is **5.7406** and is 
 <iframe
   src="assets/missing-perm-fig2.html"
   width="800"
-  height="400"
+  height="450"
   frameborder="0"
 ></iframe>
 
@@ -167,16 +167,22 @@ We chose to run a permutation because we wanted to see if the two distributions 
 <iframe
   src="assets/hypotest_fig.html"
   width="800"
-  height="400"
+  height="450"
   frameborder="0"
 ></iframe>
 
+### Conclusion
 After performing our permutation test with 1000 permutations, we compared the results to our **observed statistic** of **0.0328**. Our resulting **p-value** was **0.0**, which, when compared to our significance level of 0.05, means that we **reject the null hypothesis**. In conclusion, people do not rate high-fat and low-fat recipes on the same scale, and tend to rate high-fat recipes higher. A possible explanation for this is, as we mentioned earlier, that high-fat recipes could taste better than low-fat recipes for the general reviewers.
 
 
 ---
 
 ## Framing a Prediction Problem
+For this project, we plan on **predicting the average rating of a recipe** - a **regression problem**. The response variable for our model is average rating of a recipe, which we chose because we believe it is representative of user satisfaction and the overall quality of the recipe. Furthermore,  we have previously found that people do not rate high-fat and low-fat recipes on the same scale, so we can account for that in our prediction mdoel.
+
+The metric we will be using to evaluate our model is **mean absolute error**, which we chose over accuracy, as it is easier to interpret for how many points on average we are off by in our prediction model. Furthermore, unlike mean squared error, MAE does not disproportionally penalize large but rare errors. 
+
+Since the ratings are created after the commenters have tried the recipes, we have access to all the columns from the `'recipes'` dataset for our prediction. The features included in the dataset have been listed and described in the first section.
 
 ---
 

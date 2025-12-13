@@ -115,7 +115,7 @@ The results are as expected, with proportion of fat increasing as the calories i
 To assess missingness, we sorted and viewed the value counts of missing values in the columns of `recipe_ratings`. From this, we deduced that `'rating'`, `'description'`, and `'review'` have significant amounts of missing values. Thus, we will proceed to assess the missingness in the dataframe.
 
 ### NMAR Analysis
-I believe that the column that is most likely to be NMAR is the 'rating' column. People are less likely to leave a rating if the score they would have given is low, which means that missingness depends on the value itself. Additional data that could potentially change this missingness to MAR would be an analysis of the users' rating patterns--such as if they typically leave a rating or just a review--or possibilities of technical issues that erased the ratings. Such factors could explain the missingness of 'rating' values.
+I believe that the column that is most likely to be NMAR is the `'rating'` column. People are less likely to leave a rating if the score they would have given is low, which means that missingness depends on the value itself. Additional data that could potentially change this missingness to MAR would be an analysis of the users' rating patterns--such as if they typically leave a rating or just a review--or possibilities of technical issues that erased the ratings. Such factors could explain the missingness of `'rating'` values.
 
 ### Missingness Dependency
 To decide if our missingness is dependent on other columns in the dataset, we performed some permutation tests to investigate the dependency of the missingness of `'rating'` on a few other columns. 
@@ -189,7 +189,7 @@ Since the ratings are created after the commenters have tried the recipes, we ha
 ## Baseline Model
 For our baseline model, we utilized a random forest regressor and split the data points into training and test sets using sklearn's `train_test_split` method. As there are a few outliers and missing values in the columns we are using, we used the IQR method to exclude outliers from the `'minutes'` column and named our filtered dataframe `filtered_agg`. Since `avg_rating` has missing values that we cannot impute, as it would introduce more noise and skew our predictions, we decided to drop the missing values as it is a small percentage of the observations. 
 
-Thus, the features we are using for this model is `'minutes'`, a quantitative column, and `'fat_category'`, a nominal column which takes on the values of `'high-fat'` or `'low-fat'`. Since the range is quite large, but is somewhat skewed, we encoded the `'minutes'` with `StandardScalar` for more meaningful coefficients. For `'fat_category'`, we performed a one hot encoding and dropped one column, resulting in a `'high-fat'` column which takes value 1 for a recipe being `'high-fat'` and 0 otherwise. These steps allowed us to train the model on the data from our split
+Thus, the features we are using for this model is `'minutes'`, a quantitative column, and `'fat_category'`, a nominal column which takes on the values of `'high-fat'` or `'low-fat'`. Since the range is quite large, but is somewhat skewed, we encoded the `'minutes'` with `StandardScalar` for more meaningful coefficients. For `'fat_category'`, we performed a one hot encoding and dropped one column, resulting in a `'high-fat'` column which takes value 1 for a recipe being `'high-fat'` and 0 otherwise. These steps allowed us to train the model on the data from our split more precisely.
 
 Our **MAE** metric for this model evaluated to be **0.336**. This means that our predictions were roughly 0.336 points off from the true value, which, considering that ratings range from 1 to 5, is "good". This error means that our predictions were about 8-9% off from the total scale, which is quite small and means that predictions were consistently close to the true ratings.
 
@@ -206,7 +206,7 @@ For our final model, we used the features `'minutes'`, `'n_steps'`, `'prop_fat'`
 
 `'prop_fat'`: This column has our computed proportion of calories attributed to fat out of the total calories of the recipe, as mentioned in previous sections. According to our hypothesis test, we have established that people do not rate high-fat and low-fat recipes on the same scale. Thus, by including the actual proportions, we believe our model can use this significant relationship for predictions. We decided to leave this column as is.
 
-`'fat_category'`: This column categorizes the data as one of the following two values: `'high-fat'` and `'low-fat'`, based on if their proportion of fat is higher or lower than the mean. As previously mentioned, we have discovered through our hypothesis test that people do not rate high-fat and low-fat recipes on the same scale, but rather high-fat recipes are rated higher. Taking that into account, we converted the values with `OneHotEncoder` to create the boolean column `'high-fat'`.
+`'fat_category'`: This column categorizes the data as one of the following two values: `'high-fat'` and `'low-fat'`, based on if their proportion of fat is higher or lower than the mean. As previously mentioned, we have discovered through our hypothesis test that people do not rate high-fat and low-fat recipes on the same scale, but rather high-fat recipes are rated higher. Taking that into account, we converted the values into dummy variables with `OneHotEncoder`.
 
 `'calories (#)'`: This column contains the total calories of the recipe. In our aggregate exploration, we discovered that calories and proportion of fat generally have a positive relationship. Since they seem to be correlated, we believed that it could be another predictor for `'avg_rating'`. We noticed that there were a few outliers in this column, with some recipes having very large values, so we decided to use `QuantileTransformer` on this column to map it to a normal distribution and reduce skewness and extreme outliers. We believe that this would improve our model stability and may enhance performance. 
 
@@ -218,3 +218,21 @@ Our **MAE** metric for our final model turned out to be **0.319**, a 0.017 decre
 ---
 
 ## Fairness Analysis
+
+For our fairness analysis, we split the recipes into high-fat and low-fat recipes once more. Since our model is a regression model, we were not able to use classification metrics. Instead, we chose to evaluate accuracy with the difference in **root mean squared error**, which allows us to see if there is a substantial difference between the two groups' prediction accuracies.
+
+**Null Hypothesis:** Our model is fair, and evaluates high-fat and low-fat recipes with the roughly the same precision.  
+**Alternate Hypothesis:** Our model is unfair, and evaluates low-fat recipes with lower precision than for high-fat recipes.  
+**Test Statistic:** Difference in RMSE (low-fat - high-fat)  
+**Significance Level:** 0.05
+
+To perform our permutation test, we created new columns from one hot encoding `'fat_category'`, and we only used the `'high-fat'` column to avoid multicollinearity. We then added the predictions from our model as `'y_pred'`, and evaluated the RMSE for high-fat and low-fat groups, taking the difference as our observed statistic.
+
+<iframe
+  src="assets/fair_fig.html"
+  width="800"
+  height="450"
+  frameborder="0"
+></iframe>
+
+After performing our permutation test with 1000 permutations, we compared the results to our **observed statistic** of **0.0025**. Our resulting **p-value** was **0.252**, which is higher than our significance level of 0.05. Thus, we fail to reject the null that our model is fair. In conclusion, it is possible that our model is indeed fair and evaluates high-fat and low-fat recipes with the same precision.

@@ -198,6 +198,23 @@ Our **MAE** metric for this model evaluated to be **0.336**. This means that our
 
 ## Final Model
 
+For our final model, we used the features `'minutes'`, `'n_steps'`, `'prop_fat'`, `'fat_category'`, and `'calories (#)'` to estimate `'avg_rating'`.
+
+`'minutes'`: This column contains the cooking times of each recipe in minutes. We believe that this column can be meaningful as a recipe that takes longer could lead to a lower rating as people may lack patience or there is a higher likelihood of mistakes in that duration. We transformed this feature with `StandardScalar` as with our baseline model, to change the values to a comparable range as some recipes have extremely long cooking times and others may take little time.
+
+`'n_steps'`: This column contains the number of steps for each recipe. Our rationale for adding this column is similar to the `'minutes'` column, with more steps possibly leading to a lower rating. Furthermore, some recipes having too many recipes could suggest verbosity and be complicated to follow, especially for beginners. Since there may be many reviewers learning how to cook, as they are following someone else's recipes, this complexity can deter them from wanting to follow a recipe again and thus leave a low rating. We plotted a histogram to look at the distribution of `'n_steps'`, and since it is right skewed we can use a log transformer. We applied this transformer with `FunctionTransformer` to compress large values and make it more normally distributed. We hope that this helps our model treat differences in small and large step counts more evenly, and improve predictive performance.
+
+`'prop_fat'`: This column has our computed proportion of calories attributed to fat out of the total calories of the recipe, as mentioned in previous sections. According to our hypothesis test, we have established that people do not rate high-fat and low-fat recipes on the same scale. Thus, by including the actual proportions, we believe our model can use this significant relationship for predictions. We decided to leave this column as is.
+
+`'fat_category'`: This column categorizes the data as one of the following two values: `'high-fat'` and `'low-fat'`, based on if their proportion of fat is higher or lower than the mean. As previously mentioned, we have discovered through our hypothesis test that people do not rate high-fat and low-fat recipes on the same scale, but rather high-fat recipes are rated higher. Taking that into account, we converted the values with `OneHotEncoder` to create the boolean column `'high-fat'`.
+
+`'calories (#)'`: This column contains the total calories of the recipe. In our aggregate exploration, we discovered that calories and proportion of fat generally have a positive relationship. Since they seem to be correlated, we believed that it could be another predictor for `'avg_rating'`. We noticed that there were a few outliers in this column, with some recipes having very large values, so we decided to use `QuantileTransformer` on this column to map it to a normal distribution and reduce skewness and extreme outliers. We believe that this would improve our model stability and may enhance performance. 
+
+For our modeling algorithm, we used `RandomForestRegressor` as it allows for us to estimate numbers with decimals rather than just a rating as an integer from 1-5. To test the hyperparameters that would perform the best, we utilized `GridSearchCV` with 5-fold cross-validation to tune `n_estimators`, `max_depth`, and `min_samples_split`. As decision trees are prone to overfitting, we limited the range of numbers available to test. After running the test, the hyperparameters that ended up performing best were `n_estimators`: 300, `max_depth`: 11, and `min_samples_split`: 2. 
+
+Our **MAE** metric for our final model turned out to be **0.319**, a 0.017 decrease from our baseline metric. While it may not seem like the final model improved much over the baseline model, it is still substantial as the baseline metric already reasonably good to begin with. Even small reductions in MAE indicate consistently more accurate predictions, and the final mode better captures nonlinear relationships and interactions that the baseline model could not.
+
+
 ---
 
 ## Fairness Analysis

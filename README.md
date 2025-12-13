@@ -235,4 +235,4 @@ To perform our permutation test, we created new columns from one hot encoding `'
   frameborder="0"
 ></iframe>
 
-After performing our permutation test with 1000 permutations, we compared the results to our **observed statistic** of **0.0025**. Our resulting **p-value** was **0.252**, which is higher than our significance level of 0.05. Thus, we fail to reject the null that our model is fair. In conclusion, it is possible that our model is indeed fair and evaluates high-fat and low-fat recipes with the same precision.
+After performing our permutation test with 1000 permutations, we compared the results to our **observed statistic** of **0.0022**. Our resulting **p-value** was **0.289**, which is higher than our significance level of 0.05. Thus, we fail to reject the null that our model is fair. In conclusion, it is possible that our model is indeed fair and evaluates high-fat and low-fat recipes with the same precision.
